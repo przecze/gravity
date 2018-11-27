@@ -31,13 +31,13 @@ void calculate_forces(const state_type &x, state_type &dxdt, const double t) {
 			deltas[idx<pos_x>(i)] = x[idx<pos_x>(j)] - x[idx<pos_x>(i)];
 			deltas[idx<pos_y>(i)] = x[idx<pos_y>(j)] - x[idx<pos_y>(i)];
 			deltas[idx<pos_z>(i)] = x[idx<pos_z>(j)] - x[idx<pos_z>(i)];
-			r[i]  = std::pow(deltas[idx<pos_x>(i)], 2);
-			r[i] += std::pow(deltas[idx<pos_y>(i)], 2);
-			r[i] += std::pow(deltas[idx<pos_z>(i)], 2);
-			dxdt[idx<vel_x>(i)] = deltas[idx<pos_x>(i)]/(r[i]*std::sqrt(r[i]));
-			dxdt[idx<vel_y>(i)] = deltas[idx<pos_y>(i)]/(r[i]*std::sqrt(r[i]));
-			dxdt[idx<vel_z>(i)] = deltas[idx<pos_z>(i)]/(r[i]*std::sqrt(r[i]));
 		}
+		r[i]  = std::pow(deltas[idx<pos_x>(i)], 2);
+		r[i] += std::pow(deltas[idx<pos_y>(i)], 2);
+		r[i] += std::pow(deltas[idx<pos_z>(i)], 2);
+		dxdt[idx<vel_x>(i)] = deltas[idx<pos_x>(i)]/(r[i]*std::sqrt(r[i]));
+		dxdt[idx<vel_y>(i)] = deltas[idx<pos_y>(i)]/(r[i]*std::sqrt(r[i]));
+		dxdt[idx<vel_z>(i)] = deltas[idx<pos_z>(i)]/(r[i]*std::sqrt(r[i]));
 	}
 }
 
@@ -49,7 +49,7 @@ int main() {
 		a[idx<pos_z>(i)] = i;
 	}
 	state_type b(6*n_bodies);
-	for(int i=0; i<1e2; ++i) {
+	for(int i=0; i<1e3; ++i) {
 		calculate_forces(a, b, 1.);
 	}
 	//for(auto x: b) {
