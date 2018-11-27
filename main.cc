@@ -20,6 +20,7 @@ int idx(int body_number) {
 	return i*n_bodies + body_number;
 }
 
+template<index_type i>
 int aidx(int body_number) {
 	return i*n_active_bodies + body_number;
 }
@@ -28,10 +29,11 @@ int aidx(int body_number) {
 void calculate_forces(const state_type &x, state_type &dxdt, const double t) {
 	std::vector<std::vector<double>> deltas(3*n_active_bodies, std::vector<double>(n_bodies));
 	std::vector<std::vector<double>> r(n_active_bodies, std::vector<double>(n_bodies));
-	for(int j = 0; j<n_bodies; ++j)
-		dxdt[idx<pos_x>(i)] = x[idx<pos_x>(i)];
-		dxdt[idx<pos_y>(i)] = x[idx<pos_y>(i)];
-		dxdt[idx<pos_z>(i)] = x[idx<pos_z>(i)];
+	for(int j = 0; j<n_bodies; ++j) {
+		dxdt[idx<pos_x>(j)] = x[idx<pos_x>(j)];
+		dxdt[idx<pos_y>(j)] = x[idx<pos_y>(j)];
+		dxdt[idx<pos_z>(j)] = x[idx<pos_z>(j)];
+	}
 	for(int i = 0; i<n_active_bodies; ++i) {
 		for(int j = 0; j<n_bodies; ++j) {
 			deltas[aidx<pos_x>(i)][j] = x[idx<pos_x>(j)] - x[idx<pos_x>(i)];
@@ -40,9 +42,9 @@ void calculate_forces(const state_type &x, state_type &dxdt, const double t) {
 			r[i][j]  = std::pow(deltas[aidx<pos_x>(i)][j], 2);
 			r[i][j] += std::pow(deltas[aidx<pos_y>(i)][j], 2);
 			r[i][j] += std::pow(deltas[aidx<pos_z>(i)][j], 2);
-			dxdt[idx<vel_x>(i)] += deltas[aidx<pos_x>(i)][j]/(r[i]*std::sqrt(r[i]));
-			dxdt[idx<vel_y>(i)] += deltas[aidx<pos_y>(i)][j]/(r[i]*std::sqrt(r[i]));
-			dxdt[idx<vel_z>(i)] += deltas[aidx<pos_z>(i)][j]/(r[i]*std::sqrt(r[i]));
+			dxdt[idx<vel_x>(i)] += deltas[aidx<pos_x>(i)][j]/(r[i][j]*std::sqrt(r[i][j]));
+			dxdt[idx<vel_y>(i)] += deltas[aidx<pos_y>(i)][j]/(r[i][j]*std::sqrt(r[i][j]));
+			dxdt[idx<vel_z>(i)] += deltas[aidx<pos_z>(i)][j]/(r[i][j]*std::sqrt(r[i][j]));
 		}
 	}
 }
