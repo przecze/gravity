@@ -1,0 +1,3 @@
+#define N_ACTIVE_BODIES 10
+#define N_BODIES 1000
+#define EVALUATION_COUNT 1000
