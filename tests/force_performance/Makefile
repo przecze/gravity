@@ -1,4 +1,4 @@
-%.out : %.cc scenario.h point_type.hpp
+%.out : %.cc scenario.h point_type.hpp common.h
 	g++ -O3 -o $@ $< -I.
 
 %.time : %.out

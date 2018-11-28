@@ -1,7 +1,7 @@
-#include<iostream>
 #include<vector>
 #include<cmath>
 #include "scenario.h"
+#include "common.h"
 using state_type = std::vector<double>;
 
 std::vector<double> mass(N_BODIES, 1.);
@@ -40,33 +40,42 @@ void calculate_forces(const state_type &x, state_type &dxdt, const double t) {
 		auto delta_z = std::vector<double>(N_BODIES);
 		auto f = std::vector<double>(N_BODIES);
 		for(int j = 0; j<N_BODIES; ++j) {
+			if(i==j) continue;
 			delta_x[j] = x[idx<pos_x>(j)] - x[idx<pos_x>(i)];
 		}
 		for(int j = 0; j<N_BODIES; ++j) {
+			if(i==j) continue;
 			delta_z[j] = x[idx<pos_z>(j)] - x[idx<pos_z>(i)];
 		}
 		for(int j = 0; j<N_BODIES; ++j) {
+			if(i==j) continue;
 			delta_y[j] = x[idx<pos_y>(j)] - x[idx<pos_y>(i)];
 		}
 		for(int j = 0; j<N_BODIES; ++j) {
+			if(i==j) continue;
 			f[j]  = std::pow(delta_x[j], 2)
 					  + std::pow(delta_y[j], 2)
 					  + std::pow(delta_z[j], 2);
 		}
 		for(int j = 0; j<N_BODIES; ++j) {
+			if(i==j) continue;
 		  f[j] = f[j] *std::sqrt(f[j]);
 		}
 		for(int j = 0; j<N_BODIES; ++j) {
+			if(i==j) continue;
 			f[j] = G*mass[j]/f[j];
 		}
 		for(int j = 0; j<N_BODIES; ++j) {
-			dxdt[idx<vel_x>(j)] += f[j]*delta_x[j];
+			if(i==j) continue;
+			dxdt[idx<vel_x>(j)] -= f[j]*delta_x[j];
 		}
 		for(int j = 0; j<N_BODIES; ++j) {
-			dxdt[idx<vel_y>(j)] += f[j]*delta_y[j];
+			if(i==j) continue;
+			dxdt[idx<vel_y>(j)] -= f[j]*delta_y[j];
 		}
 		for(int j = 0; j<N_BODIES; ++j) {
-			dxdt[idx<vel_z>(j)] += f[j]*delta_z[j];
+			if(i==j) continue;
+			dxdt[idx<vel_z>(j)] -= f[j]*delta_z[j];
 		}
 	}
 }
@@ -85,5 +94,17 @@ int main() {
 	for(int i=0; i<EVALUATION_COUNT; ++i) {
 		calculate_forces(a, b, 1.);
 	}
+	for(int i=0; i<TO_PRINT+N_ACTIVE_BODIES; ++i) {
+		print(b[idx<vel_x>(i)]);
+	}
+	std::cout<<std::endl;
+	for(int i=0; i<TO_PRINT+N_ACTIVE_BODIES; ++i) {
+		print(b[idx<vel_y>(i)]);
+	}
+	std::cout<<std::endl;
+	for(int i=0; i<TO_PRINT+N_ACTIVE_BODIES; ++i) {
+		print(b[idx<vel_z>(i)]);
+	}
+	std::cout<<std::endl;
 
 }
