@@ -1,10 +1,7 @@
-#include<iostream>
 #include<vector>
 #include<cmath>
-using state_type = std::vector<double>;
+#include<array>
 
-int n_bodies = 1000;
-int n_active_bodies = 10;
 
 enum index_type {
 	pos_x = 0,
@@ -15,53 +12,48 @@ enum index_type {
 	vel_z = 5,
 };
 
-template<index_type i>
-int idx(int body_number) {
-	return i*n_bodies + body_number;
-}
+using StateType = std::array<std::vector<double>, 6>;
 
-template<index_type i>
-int aidx(int body_number) {
-	return i*n_active_bodies + body_number;
-}
+class GravityModel {
+public:
 
 
-void calculate_forces(const state_type &x, state_type &dxdt, const double t) {
-	std::vector<std::vector<double>> deltas(3*n_active_bodies, std::vector<double>(n_bodies));
-	std::vector<std::vector<double>> r(n_active_bodies, std::vector<double>(n_bodies));
-	for(int j = 0; j<n_bodies; ++j) {
-		dxdt[idx<pos_x>(j)] = x[idx<pos_x>(j)];
-		dxdt[idx<pos_y>(j)] = x[idx<pos_y>(j)];
-		dxdt[idx<pos_z>(j)] = x[idx<pos_z>(j)];
-	}
-	for(int i = 0; i<n_active_bodies; ++i) {
-		for(int j = 0; j<n_bodies; ++j) {
-			deltas[aidx<pos_x>(i)][j] = x[idx<pos_x>(j)] - x[idx<pos_x>(i)];
-			deltas[aidx<pos_y>(i)][j] = x[idx<pos_y>(j)] - x[idx<pos_y>(i)];
-			deltas[aidx<pos_z>(i)][j] = x[idx<pos_z>(j)] - x[idx<pos_z>(i)];
-			r[i][j]  = std::pow(deltas[aidx<pos_x>(i)][j], 2);
-			r[i][j] += std::pow(deltas[aidx<pos_y>(i)][j], 2);
-			r[i][j] += std::pow(deltas[aidx<pos_z>(i)][j], 2);
-			dxdt[idx<vel_x>(i)] += deltas[aidx<pos_x>(i)][j]/(r[i][j]*std::sqrt(r[i][j]));
-			dxdt[idx<vel_y>(i)] += deltas[aidx<pos_y>(i)][j]/(r[i][j]*std::sqrt(r[i][j]));
-			dxdt[idx<vel_z>(i)] += deltas[aidx<pos_z>(i)][j]/(r[i][j]*std::sqrt(r[i][j]));
+	std::vector<double> mass;
+
+	double G=1.;
+	int n_active_bodies;
+
+
+	void calculate_momentum(const StateType &x, StateType &dxdt, const double t) {
+		for(auto i = n_active_bodies; i-->0;) {
+			const auto b_x = x[pos_x][i];
+			const auto b_y = x[pos_y][i];
+			const auto b_z = x[pos_z][i];
+			for(int j = x.size(); j --> 0;) {
+				dxdt[pos_x][j] = x[vel_x][j];
+				dxdt[pos_y][j] = x[vel_y][j];
+				dxdt[pos_z][j] = x[vel_z][j];
+				if(i==j) continue;
+				const auto delta_x = x[pos_x][j] - b_x;
+				const auto delta_z = x[pos_y][j] - b_y;
+				const auto delta_y = x[pos_z][j] - b_z;
+				const auto r2 = delta_x * delta_x
+					+ delta_y * delta_y
+					+ delta_z * delta_z;
+				const auto f = G*mass[i]*mass[j]/(r2*std::sqrt(r2));
+				dxdt[vel_x][j] -= f*delta_x;
+				dxdt[vel_y][j] -= f*delta_y;
+				dxdt[vel_z][j] -= f*delta_z;
+			}
 		}
 	}
-}
+};
 
 int main() {
-	state_type a(6*n_bodies, 0.);
-	for(int i=0; i<n_bodies; ++i) {
-		a[idx<pos_x>(i)] = i;
-		a[idx<pos_y>(i)] = i;
-		a[idx<pos_z>(i)] = i;
-	}
-	state_type b(6*n_bodies);
-	for(int i=0; i<1e3; ++i) {
-		calculate_forces(a, b, 1.);
-	}
-	//for(auto x: b) {
-	//	std::cout<<x<<" ";
-	//}
-	//std::cout<<std::endl;
+	auto gm = GravityModel{};
+	auto state = StateType{};
+	auto n_bodies=100;
+	std::fill(state.begin(), state.end(), std::vector<double>(n_bodies));
+	gm.n_active_bodies = 3.;
+	gm.mass = std::vector<double>(n_bodies);
 }
