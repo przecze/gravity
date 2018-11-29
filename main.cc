@@ -29,7 +29,7 @@ public:
 
 	std::valarray<double> mass;
 
-	double G=1;
+	double G=10.;
 	int n_active_bodies;
 
 
@@ -136,7 +136,7 @@ struct printing_functor {
 	template<typename State>
 	void operator()(const State& x, double t) const {
 		const auto& q = x.first;
-		const auto& p = x.first;
+		const auto& p = x.second;
 		for(auto j=q[0].size(); j --> 0;) {
 			out<<q[pos_x][j]<<" "<<q[pos_y][j]<<" "<<q[pos_z][j]<<' ';
 			out<<p[pos_x][j]<<" "<<p[pos_y][j]<<" "<<p[pos_z][j]<<'\n';
@@ -152,7 +152,7 @@ void predict(std::vector<Body> bodies, double t) {
 	gm.mass = s.mass;
 	using namespace boost::numeric::odeint;
   using StepperType = symplectic_rkn_sb3a_mclachlan< ContainerType >;
-	const double dt = 100.0;
+	const double dt = 1.;
 	integrate_const(
 					StepperType(),
 					std::make_pair(positions_functor(gm), momentum_functor(gm)),
@@ -163,9 +163,9 @@ void predict(std::vector<Body> bodies, double t) {
 int main(int argc, char *argv[]) {
 	auto n_bodies=3;
 	auto planets = std::vector<Body>{};
-	double r = 1.;
-	planets.push_back(Body{{-r,0.,0.}, {0.,-r,0.}, 1.});
-	planets.push_back(Body{{0.,0.,0.}, {0.,0.,0.}, 10.});
-	planets.push_back(Body{{r,0.,0.} , {0.,r,0.} , 1.});
+	double r = 100.;
+	planets.push_back(Body{{-r,0.,0.}, {0.,1.,0.}, 1.});
+	planets.push_back(Body{{0.,0.,0.}, {0.2,1.,0.}, 5.});
+	planets.push_back(Body{{1.5*r,0.,0.}, {-0.2,-2.,0.} , 1.});
 	predict(planets, 1000.);
 }
