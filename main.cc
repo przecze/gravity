@@ -1,6 +1,7 @@
 #include<vector>
 #include<iostream>
 #include<valarray>
+#include<fstream>
 
 #include "gravity.h"
 
@@ -16,23 +17,33 @@ void remove_total_momentum(std::vector<Body>& bodies) {
 	
 
 int main(int argc, char *argv[]) {
+	auto input = std::fstream{"system.txt"};
 	auto planets = std::vector<Body>{};
-	double r = 6.;
-	auto vel = 2.;
-	auto sun = Body({0.,0.,0.}, {0.,0.,0.,}, 10.);
-	auto earth = Body({r,0.,0.}, {0.,vel,0.,}, 1.);
-	planets.push_back(sun);
-	planets.push_back(earth);
+	double d_n_planets, d_n_active_planets, t;
+	double dummy;
+	input >> d_n_planets >> d_n_active_planets >> t;
+	auto n_planets = int(d_n_planets);
+	auto n_active_planets = int(d_n_active_planets);
+	t = t==-1?1000.:t;
+	for(int i = 0; i++<7 - 3;) {
+		input >> dummy;
+	}
+	//std::cout<<n_planets<<" "<<n_active_planets<<" "<<t<<std::endl;
+	for(int i = 0; i++<n_planets;) {
+		double x, y, z, vx, vy, vz, m;
+		input >> x >> y >> z >> vx >> vy >> vz >>m;
+		planets.push_back(Body{{x,y,z}, {vx,vy,vz}, m});
+		//std::cout<<"D:"<<x<<" "<<y<<" "<<z<<" "<<vx<<" "<<vy<<" "<<vz<<" "<<m<<" "<<std::endl;
+	}
+		
 	remove_total_momentum(planets);
-	for(auto i = 0; i<10;i+=1) {
-			for(auto v = 0.; v<10;++v) {
-			planets.push_back(Body({r+i/20.,0,0}, {0,v+v/20.,0}, 1.));
-	}}
+	//for(auto i = 0; i<10;i+=1) {
+	//		for(auto v = 0.; v<10;++v) {
+	//		planets.push_back(Body({r+i/20.,0,0}, {0,v+v/20.,0}, 1.));
+	//}}
 	for(auto i = 0; i<6; ++i) {
 		std::cout<<planets.size()<<" ";
 	}
 	std::cout<<'\n';
-	//planets.push_back(earth);
-	//planets.push_back(Body{{1.5*r,0.,0.}, {-0.2,-2.,0.} , 1.});
-	predict(planets, 1000., 2);
+	predict(planets, t, -1);
 }
