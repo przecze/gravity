@@ -10,11 +10,12 @@ class Planet:
 		self.vel = vel
 		self.mass = mass
 
-def dump_planets(planets, time):
+def dump_planets(planets, time, active_planets=-1):
 	size = len(planets)
 	data = np.zeros((size + 1, 7))
 	data[0][0] = size
-	data[0][1] = size
+	data[0][1] = size if active_planets==-1 else active_planets
+	print(data[0][1])
 	data[0][2] = time
 	for i in range(size):
 		planet = planets[i]
@@ -30,15 +31,32 @@ def run_simulation():
 	data = np.loadtxt(io.BytesIO(simulation_output))
 	return data
 
-def main():
-	r = 10.
-	vel = 10.
+def random3body():
+	name = "random"
+	r = 5.
+	vel = .3
 	mass = 1.
-	p1 = Planet([r,0.],[0.,vel], 1.)
-	p2 = Planet([0.,0.],[0.,0.], 1.)
-	dump_planets([p1,p2], 1.)
+	rand = lambda : 2*(np.random.random() - 0.5)
+	planets = []
+	planets.append(Planet([r*rand(),r*rand()],[vel*rand(),vel*rand()], 1.))
+	planets.append(Planet([r*rand(),r*rand()],[vel*rand(),vel*rand()], 1.))
+	planets.append(Planet([r*rand(),r*rand()],[vel*rand(),vel*rand()], 1.))
+	dump_planets(planets, 1000.)
 	data = run_simulation()
-	plot.plot(data, 2*r)
+	plot.plot(data, 2*r, save_to=name)
+
+def main():
+	name = "two_bodies_all"
+	r = 5.
+	vel = 4
+	mass = 1.
+	planets = []
+	planets.append(Planet([0.,0.],[0.,0.], 100.))
+	for i in range(10):
+		planets.append(Planet([r,0.],[0.,vel+i/10.*vel], 1.))
+	dump_planets(planets, 200., active_planets=1)
+	data = run_simulation()
+	plot.plot(data, 2*r, save_to=name, save_freq=10)
 	
 if __name__=="__main__":
 	main()	

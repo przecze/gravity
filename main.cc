@@ -5,12 +5,13 @@
 
 #include "gravity.h"
 
-void remove_total_momentum(std::vector<Body>& bodies) {
+void remove_total_momentum(std::vector<Body>& bodies, int active_bodies) {
+	auto active = std::vector<Body>(&bodies[0], &bodies[active_bodies]);
 	auto total_p = point_type{0.,0.,0.};
-	for(auto body: bodies) {
+	for(auto body: active) {
 		total_p += body.vel*body.mass;
 	}
-	for(auto& body: bodies) {
+	for(auto& body: active) {
 		body.vel -= total_p/body.mass/bodies.size();
 	}
 }
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
 		//std::cout<<"D:"<<x<<" "<<y<<" "<<z<<" "<<vx<<" "<<vy<<" "<<vz<<" "<<m<<" "<<std::endl;
 	}
 		
-	remove_total_momentum(planets);
+	remove_total_momentum(planets, n_active_planets);
 	//for(auto i = 0; i<10;i+=1) {
 	//		for(auto v = 0.; v<10;++v) {
 	//		planets.push_back(Body({r+i/20.,0,0}, {0,v+v/20.,0}, 1.));
@@ -45,5 +46,5 @@ int main(int argc, char *argv[]) {
 		std::cout<<planets.size()<<" ";
 	}
 	std::cout<<'\n';
-	predict(planets, t, -1);
+	predict(planets, t, n_active_planets);
 }
