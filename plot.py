@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 import os
 import shutil
 import time
+import sys
 
 save_count = 0
-def plot(data, max_r,save_to=None, save_freq=100):
+def plot(data, max_r,save_to=None, save_freq=100, interval=20):
 	fig = plt.figure()
 	N_BODIES = int(data[0][0])
 	print(N_BODIES)
@@ -43,14 +44,17 @@ def plot(data, max_r,save_to=None, save_freq=100):
 			fig.savefig(path, dpi=100)
 		return trajectories + [scat]
 	anim = animation.FuncAnimation(fig, animate, np.arange(1, data.shape[0]//N_BODIES),
-															  interval=20, blit=True)
+															  interval=interval, blit=True)
 	#anim.save("evolution.gif", writer="imagemagick")
 	plt.show()
 
-def plot_from_file():
-	data = np.loadtxt("evolution.txt")
+def plot_from_file(file_name = "evolution.txt"):
+	data = np.loadtxt(file_name)
 	plot(data, np.max(data))
 
 
 if __name__=="__main__":
-	plot_from_file()
+	if len(sys.argv)==2:
+		plot_from_file(sys.argv[1])
+	else:
+		plot_from_file()

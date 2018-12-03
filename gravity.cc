@@ -31,6 +31,7 @@ public:
 
 	int n_active_bodies;
 
+	bool one_over_r=false;
 
 	void calculate_momentum(const ContainerType &q, const ContainerType& p, ContainerType &dpdt, double t) {
 		dpdt = get_container(q[0].size());
@@ -38,26 +39,15 @@ public:
 			const auto b_x = q[pos_x][i];
 			const auto b_y = q[pos_y][i];
 			const auto b_z = q[pos_z][i];
-			for(int j = q[0].size(); j --> i+1;) {
+			for(int j = q[0].size(); j --> 0;) {
+				if(i==j) continue;
 				const auto delta_x = q[pos_x][j] - b_x;
 				const auto delta_y = q[pos_y][j] - b_y;
 				const auto delta_z = q[pos_z][j] - b_z;
 				const auto r2 = delta_x * delta_x
 											+ delta_y * delta_y
 											+ delta_z * delta_z;
-				const auto f = mass[i]/(r2);//*std::sqrt(r2));
-				dpdt[pos_x][j] -= f*delta_x;
-				dpdt[pos_y][j] -= f*delta_y;
-				dpdt[pos_z][j] -= f*delta_z;
-			}
-			for(int j = i; j --> 0;) {
-				const auto delta_x = q[pos_x][j] - b_x;
-				const auto delta_y = q[pos_y][j] - b_y;
-				const auto delta_z = q[pos_z][j] - b_z;
-				const auto r2 = delta_x * delta_x
-											+ delta_y * delta_y
-											+ delta_z * delta_z;
-				const auto f = mass[i]/(r2);//*std::sqrt(r2));
+				const auto f = mass[i]/(one_over_r?(r2):r2*std::sqrt(r2));
 				dpdt[pos_x][j] -= f*delta_x;
 				dpdt[pos_y][j] -= f*delta_y;
 				dpdt[pos_z][j] -= f*delta_z;
@@ -138,7 +128,7 @@ struct printing_functor {
 	}
 };
 
-void predict(std::vector<Body> bodies, double t, int active_bodies) {
+void predict(std::vector<Body> bodies, double t, int active_bodies, bool one_over_r) {
 	auto s = rewrite(bodies);
 	auto gm = GravityModel{};
 	if(active_bodies==-1) {
@@ -146,6 +136,7 @@ void predict(std::vector<Body> bodies, double t, int active_bodies) {
 	}
 	gm.n_active_bodies = active_bodies;
 	gm.mass = s.mass;
+	gm.one_over_r = one_over_r;
 	using namespace boost::numeric::odeint;
   auto stepper = velocity_verlet<ContainerType>{};
 	const double dt = 0.1;

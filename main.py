@@ -10,13 +10,14 @@ class Planet:
 		self.vel = vel
 		self.mass = mass
 
-def dump_planets(planets, time, active_planets=-1):
+def dump_planets(planets, time, active_planets=-1, one_over_r = False):
 	size = len(planets)
 	data = np.zeros((size + 1, 7))
 	data[0][0] = size
 	data[0][1] = size if active_planets==-1 else active_planets
+	data[0][2] = 1. if one_over_r else 0.
 	print("Plotting {} bodies".format(data[0][1]))
-	data[0][2] = time
+	data[0][3] = time
 	for i in range(size):
 		planet = planets[i]
 		assert(len(planet.pos)==2)
@@ -86,43 +87,28 @@ def two_bodies_all_solutions():
 		planets.append(Planet([r,0.],[0.,vel+i/10.*vel], 1.))
 	dump_planets(planets, 200., active_planets=1)
 	data = run_simulation(true_gravity=True)
+	np.savetxt("two_bodies_all.txt", data, fmt='%.4f')
 	plot.plot(data, 10*r, save_to=name, save_freq=10)
 
-def initial_conditions_pos():
+def initial_conditions(delta_x):
 	name = "initital_conditions"
 	r = 40.
 	vel = 2.
 	mass = 1.
 	planets = []
 	planets.append(Planet([0.,0.],[0.,0.], 100.))
-	planets.append(Planet([r,0.],[0.,vel], 100.))
-	planets.append(Planet([0.7*r+0.001,      0.],[0.,-0.01*vel], 0.))
-	planets.append(Planet([0.7*r,      0.],[0.,-0.01*vel], 0.))
+	planets.append(Planet([r,0.],[0.,3*vel], 100.))
+	planets.append(Planet([0.7*r+delta_x[0],      0.],[0.,-0.01*vel+delta_x[1]], 0.))
+	planets.append(Planet([0.7*r,                 0.],[0.,-0.01*vel           ], 0.))
 	remove_momentum(planets)
 	centralize(planets)
-	dump_planets(planets, 100., active_planets=2)
+	dump_planets(planets, 100., active_planets=2, one_over_r=True)
 	data = run_simulation(debug=True)
-	plot.plot(data, 1.5*r)
-	
-def initial_conditions_vel():
-	name = "initital_conditions"
-	r = 40.
-	vel = 2.
-	mass = 1.
-	planets = []
-	planets.append(Planet([0.,0.],[0.,0.], 100.))
-	planets.append(Planet([r,0.],[0.,vel], 100.))
-	planets.append(Planet([0.7*r,      0.],[0.,-0.01*vel], 0.))
-	planets.append(Planet([0.7*r,      0.],[0.,-0.0101*vel], 0.))
-	remove_momentum(planets)
-	centralize(planets)
-	dump_planets(planets, 100., active_planets=2)
-	data = run_simulation(debug=True)
-	plot.plot(data, 1.5*r)
+	plot.plot(data, 1.5*r, interval=100)
 
 if __name__=="__main__":
-	#initial_conditions_pos()	
-	initial_conditions_vel()	
+	initial_conditions([0.0001,0])	
+	#initial_conditions_vel()	
 	#two_bodies_all_solutions()
 	#random3body()
 	
