@@ -2,8 +2,7 @@
 \usetheme{Boadilla}
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{animate}
-\usepackage{pdfpc-commands}
+\usepackage[T1]{fontenc}
 \begin{document}
 \title{Chaos Deterministyczny} 
 \author{Przemysław Czechowski} 
@@ -12,8 +11,39 @@
 \frame{\titlepage} 
 
 
-
-\begin{frame}{Embedded Animation}
-  \animategraphics[loop,controls,width=\linewidth]{10}{png/something-}{0}{45}
+\begin{frame}{Problem dwóch ciał, problem trzech ciał}
+Cześć interaktywna
+\end{frame}
+\begin{frame}{Stabilność układu słonecznego}
+1887 - nagroda Króla Szwecji: rozwiązać problem N ciał oddziałujących grawitacyjnie\pause\\
+Henri Poincaré zdobywa nagrodę, chociaż nie rozwiązał problemu
 \end{frame}
 
+\begin{frame}{Chaos}
+Układ chaotyczny: taki, w którym małe różnice warunków początkowych powodują duże zmiany w ewolucji\pause
+Przykłady:
+\begin{itemize}
+\item Problem N ciał
+\item Przewidywanie pogody
+\item Każdy problem związany z powstaniem fraktalnej struktury
+\item Prawie każdy problem z wystarczającą liczbą stopni swobody
+\end{itemize} 
+\end{frame}
+
+\begin{frame}{Wykładniki Lyapunowa}
+\begin{equation}
+| \delta\mathbf{x}(t) | \approx e^{\lambda t} | \delta \mathbf{x}(0) |
+\end{equation}\pause
+Czas Lyapunowa
+\begin{equation}
+t_L = \frac{1}{\lambda}
+\end{equation}\pause
+Dla układu słonecznego $t=$ 5 milionów lat \cite{laskar1989numerical}
+
+\end{frame}
+\begin{frame}
+\nocite{stewart1994czy}
+\bibliography{mybib}{}
+\bibliographystyle{plain}
+\end{frame}
+\end{document}

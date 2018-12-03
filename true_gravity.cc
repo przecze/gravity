@@ -45,7 +45,7 @@ public:
 				const auto r2 = delta_x * delta_x
 											+ delta_y * delta_y
 											+ delta_z * delta_z;
-				const auto f = mass[i]/(r2);//*std::sqrt(r2));
+				const auto f = mass[i]/(r2*std::sqrt(r2));
 				dpdt[pos_x][j] -= f*delta_x;
 				dpdt[pos_y][j] -= f*delta_y;
 				dpdt[pos_z][j] -= f*delta_z;
@@ -57,7 +57,7 @@ public:
 				const auto r2 = delta_x * delta_x
 											+ delta_y * delta_y
 											+ delta_z * delta_z;
-				const auto f = mass[i]/(r2);//*std::sqrt(r2));
+				const auto f = mass[i]/(r2*std::sqrt(r2));
 				dpdt[pos_x][j] -= f*delta_x;
 				dpdt[pos_y][j] -= f*delta_y;
 				dpdt[pos_z][j] -= f*delta_z;

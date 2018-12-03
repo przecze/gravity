@@ -7,6 +7,7 @@ import os
 import shutil
 import time
 
+save_count = 0
 def plot(data, max_r,save_to=None, save_freq=100):
 	fig = plt.figure()
 	N_BODIES = int(data[0][0])
@@ -28,6 +29,7 @@ def plot(data, max_r,save_to=None, save_freq=100):
 			time.sleep(1.)
 			shutil.rmtree(dir)
 	def animate(i):
+		global save_count
 		coords = data[N_BODIES*i:N_BODIES*i+N_BODIES]
 		scat.set_offsets(coords[:,:2])
 		for body in range(coords.shape[0]):
@@ -35,12 +37,13 @@ def plot(data, max_r,save_to=None, save_freq=100):
 			h_array = np.array(history[body])
 			trajectories[body].set_data(h_array[:,0], h_array[:,1])
 		if save_to!=None and i % save_freq == 0:
-			path = os.path.join("png",save_to,"evolution{0:05d}.png".format(i))
+			path = os.path.join("png",save_to,"evolution-{}.png".format(save_count))
+			save_count+=1
 			os.makedirs(os.path.dirname(path), exist_ok=True)
-			fig.savefig(path)
+			fig.savefig(path, dpi=100)
 		return trajectories + [scat]
 	anim = animation.FuncAnimation(fig, animate, np.arange(1, data.shape[0]//N_BODIES),
-															  interval=10, blit=True)
+															  interval=20, blit=True)
 	#anim.save("evolution.gif", writer="imagemagick")
 	plt.show()
 
