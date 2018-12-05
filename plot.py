@@ -37,7 +37,7 @@ def plot(data, max_r,save_to=None, save_freq=100, interval=20, disabled_trajecto
 				continue
 			history[body].append([coords[body][0], coords[body][1]])
 			h_array = np.array(history[body])
-			trajectories[body].set_data(h_array[:,0], h_array[:,1])
+			trajectories[body].set_data(h_array[-1000:,0], h_array[-1000:,1])
 		if save_to!=None and i % save_freq == 0:
 			path = os.path.join("png",save_to,"evolution-{}.png".format(save_count))
 			save_count+=1
