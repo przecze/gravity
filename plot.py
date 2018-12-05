@@ -9,7 +9,8 @@ import time
 import sys
 
 save_count = 0
-def plot(data, max_r,save_to=None, save_freq=100, interval=20):
+def plot(data, max_r,save_to=None, save_freq=100, interval=20, disabled_trajectories=[]):
+	disabled_trajectories = {x%len(disabled_trajectories) for x in disabled_trajectories}
 	fig = plt.figure()
 	N_BODIES = int(data[0][0])
 	print(N_BODIES)
@@ -34,6 +35,8 @@ def plot(data, max_r,save_to=None, save_freq=100, interval=20):
 		coords = data[N_BODIES*i:N_BODIES*i+N_BODIES]
 		scat.set_offsets(coords[:,:2])
 		for body in range(coords.shape[0]):
+			if body in disabled_trajectories:
+				continue
 			history[body].append([coords[body][0], coords[body][1]])
 			h_array = np.array(history[body])
 			trajectories[body].set_data(h_array[:,0], h_array[:,1])
@@ -48,9 +51,9 @@ def plot(data, max_r,save_to=None, save_freq=100, interval=20):
 	#anim.save("evolution.gif", writer="imagemagick")
 	plt.show()
 
-def plot_from_file(file_name = "evolution.txt"):
+def plot_from_file(file_name = "evolution.txt", **kwargs):
 	data = np.loadtxt(file_name)
-	plot(data, np.max(data))
+	plot(data, np.max(data), **kwargs)
 
 
 if __name__=="__main__":
