@@ -3,6 +3,7 @@ import numpy as np
 import plot
 import io
 import subprocess
+import copy
 
 class Planet:
 	def __init__(self, pos, vel, mass, stationary=False):
@@ -94,22 +95,26 @@ def two_bodies_all_solutions():
 
 def initial_conditions(delta_x):
 	name = "initital_conditions"
-	r = 40.
-	vel = 2.
-	mass = 1.
+	r = 20.
+	vel = 1.
+	big_mass = 10
 	planets = []
-	planets.append(Planet([0.,0.],[0.,0.], 100.))
-	planets.append(Planet([r,0.],[0.,3*vel], 100.))
-	planets.append(Planet([0.7*r+delta_x[0],      0.],[0.,-0.01*vel+delta_x[1]], 0.))
-	planets.append(Planet([0.7*r,                 0.],[0.,-0.01*vel           ], 0.))
+	planets.append(Planet([0.,0.],[0.,0.], big_mass, stationary=True))
+	planets.append(Planet([r,0.],[0.,0.], big_mass, stationary=True))
+	probe = Planet([0.53*r+delta_x[0],      0., 0.4*r],[0,-0.5*vel, vel], 0.)
+	probe2 = copy.deepcopy(probe)
+	probe2.pos[0] += delta_x[0] + 0.0001
+	probe2.vel[1] += delta_x[1]
+	planets.append(probe)
+	planets.append(probe2)
 	remove_momentum(planets)
 	centralize(planets)
-	dump_planets(planets, 100., active_planets=2, one_over_r=True)
+	dump_planets(planets, 1000., active_planets=2, one_over_r=False)
 	data = run_simulation(debug=True)
-	plot.plot(data, 1.5*r, interval=100, disabled_trajectories = (-1, -2))
+	plot.plot(data, 1.5*r, interval=1, disabled_trajectories = (-1, -2))
 
 if __name__=="__main__":
-	initial_conditions([0.0001,0])	
+	initial_conditions([0.001,0])	
 	#initial_conditions_vel()	
 	#two_bodies_all_solutions()
 	#random3body()

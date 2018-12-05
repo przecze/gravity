@@ -13,9 +13,6 @@ def plot(data, max_r,save_to=None, save_freq=100, interval=20, disabled_trajecto
 	fig = plt.figure()
 	N_BODIES = int(data[0][0])
 	disabled_trajectories = {x%N_BODIES for x in disabled_trajectories}
-	print(disabled_trajectories)
-	print(N_BODIES)
-	print(data)
 	colors = np.zeros(N_BODIES)
 	colors[-1]= 100.
 	colors[-2]= 50.
