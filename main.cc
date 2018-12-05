@@ -29,15 +29,13 @@ int main(int argc, char *argv[]) {
 	auto n_planets = int(d_n_planets);
 	auto n_active_planets = int(d_n_active_planets);
 	t = t==-1?1000.:t;
-	for(int i = 0; i++<7 - 4;) {
+	for(int i = 0; i++<8 - 4;) {
 		input >> dummy;
 	}
-	//std::cout<<"D"<<n_active_planets<<" "<<n_active_planets<<" "<<t<<std::endl;
 	for(int i = 0; i++<n_planets;) {
-		double x, y, z, vx, vy, vz, m;
-		input >> x >> y >> z >> vx >> vy >> vz >>m;
-		planets.push_back(Body{{x,y,z}, {vx,vy,vz}, m});
-		//std::cout<<"D:"<<x<<" "<<y<<" "<<z<<" "<<vx<<" "<<vy<<" "<<vz<<" "<<m<<" "<<std::endl;
+		double x, y, z, vx, vy, vz, m, stationary;
+		input >> x >> y >> z >> vx >> vy >> vz >>m >> stationary;
+		planets.push_back(Body{{x,y,z}, {vx,vy,vz}, m, stationary==1.});
 	}
 		
 	//remove_total_momentum(planets, n_active_planets);

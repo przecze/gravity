@@ -29,6 +29,8 @@ public:
 
 	std::valarray<double> mass;
 
+	std::valarray<bool> stationary;
+
 	int n_active_bodies;
 
 	bool one_over_r=false;
@@ -40,7 +42,7 @@ public:
 			const auto b_y = q[pos_y][i];
 			const auto b_z = q[pos_z][i];
 			for(int j = q[0].size(); j --> 0;) {
-				if(i==j) continue;
+				if(i==j or stationary[j]) continue;
 				const auto delta_x = q[pos_x][j] - b_x;
 				const auto delta_y = q[pos_y][j] - b_y;
 				const auto delta_z = q[pos_z][j] - b_z;
@@ -57,6 +59,12 @@ public:
 
 	void calculate_positions(const ContainerType &p, ContainerType &dqdt) {
 		for(int j = p[0].size(); j --> 0;) {
+			if(stationary[j]) {
+				dqdt[pos_x][j] = 0;
+				dqdt[pos_y][j] = 0;
+				dqdt[pos_z][j] = 0;
+				continue;
+			}
 			dqdt[pos_x][j] = p[pos_x][j];
 			dqdt[pos_y][j] = p[pos_y][j];
 			dqdt[pos_z][j] = p[pos_z][j];
@@ -70,6 +78,7 @@ struct System {
 	ContainerType q;
 	ContainerType p;
 	std::valarray<double> mass;
+	std::valarray<bool> stationary;
 };
 
 System rewrite(const std::vector<Body>& bodies) {
@@ -78,12 +87,14 @@ System rewrite(const std::vector<Body>& bodies) {
 	s.q = get_container(count);
 	s.p = get_container(count);
 	s.mass = std::valarray<double>(count);
+	s.stationary = std::valarray<bool>(count);
 	for(auto j = count; j --> 0;) {
 		const auto& body = bodies[j];
 		for(auto dim=3; dim --> 0;) {
 			s.q[dim][j] = body.pos[dim];
 			s.p[dim][j] = body.vel[dim];
 		}
+		s.stationary[j] = body.stationary;
 		s.mass[j] = body.mass;
 	}
 	return s;
@@ -136,6 +147,7 @@ void predict(std::vector<Body> bodies, double t, int active_bodies, bool one_ove
 	}
 	gm.n_active_bodies = active_bodies;
 	gm.mass = s.mass;
+	gm.stationary = s.stationary;
 	gm.one_over_r = one_over_r;
 	using namespace boost::numeric::odeint;
   auto stepper = velocity_verlet<ContainerType>{};

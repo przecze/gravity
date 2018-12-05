@@ -5,27 +5,31 @@ import io
 import subprocess
 
 class Planet:
-	def __init__(self, pos, vel, mass):
+	def __init__(self, pos, vel, mass, stationary=False):
 		self.pos = pos
 		self.vel = vel
 		self.mass = mass
+		self.stationary = stationary
 
 def dump_planets(planets, time, active_planets=-1, one_over_r = False):
 	size = len(planets)
-	data = np.zeros((size + 1, 7))
+	data = np.zeros((size + 1, 8))
 	data[0][0] = size
 	data[0][1] = size if active_planets==-1 else active_planets
 	data[0][2] = 1. if one_over_r else 0.
-	print("Plotting {} bodies".format(data[0][1]))
+	print("Dumping {} bodies".format(data[0][1]))
 	data[0][3] = time
 	for i in range(size):
 		planet = planets[i]
-		assert(len(planet.pos)==2)
-		assert(len(planet.vel)==2)
+		if len(planet.pos)==2:
+				planet.pos = planet.pos + [0.]
+		if len(planet.vel)==2:
+				planet.vel = planet.vel + [0.]
+		assert(len(planet.pos)==3)
+		assert(len(planet.vel)==3)
 		planet.mass = float(planet.mass)
-		data[i+1] = planet.pos + [0] + planet.vel + [0, planet.mass]
+		data[i+1] = planet.pos + planet.vel + [planet.mass, float(planet.stationary)]
 	np.savetxt("system.txt", data, fmt='%.4f')
-	print(data)
 
 def run_simulation(true_gravity=False, debug=False):
 	if true_gravity:
@@ -47,7 +51,6 @@ def remove_momentum(bodies):
 	for b in bodies:
 		b.vel[0] -= total_p[0]/M
 		b.vel[1] -= total_p[1]/M
-		print(b.vel)
 
 def centralize(bodies):
 	cm = np.array([0.,0.])
@@ -58,7 +61,6 @@ def centralize(bodies):
 	for b in bodies:
 		b.pos[0] -= cm[0]/M
 		b.pos[1] -= cm[1]/M
-		print(b.vel)
 
 def random3body():
 	name = "random"
@@ -102,7 +104,7 @@ def initial_conditions(delta_x):
 	planets.append(Planet([0.7*r,                 0.],[0.,-0.01*vel           ], 0.))
 	remove_momentum(planets)
 	centralize(planets)
-	dump_planets(planets, 100., active_planets=2, one_over_r=True)
+	dump_planets(planets, 1., active_planets=2, one_over_r=True)
 	data = run_simulation(debug=True)
 	plot.plot(data, 1.5*r, interval=100)
 
