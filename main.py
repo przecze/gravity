@@ -104,9 +104,9 @@ def initial_conditions(delta_x):
 	planets.append(Planet([0.7*r,                 0.],[0.,-0.01*vel           ], 0.))
 	remove_momentum(planets)
 	centralize(planets)
-	dump_planets(planets, 1., active_planets=2, one_over_r=True)
+	dump_planets(planets, 100., active_planets=2, one_over_r=True)
 	data = run_simulation(debug=True)
-	plot.plot(data, 1.5*r, interval=100)
+	plot.plot(data, 1.5*r, interval=100, disabled_trajectories = (-1, -2))
 
 if __name__=="__main__":
 	initial_conditions([0.0001,0])	
