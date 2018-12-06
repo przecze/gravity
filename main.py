@@ -112,12 +112,11 @@ def initial_conditions(delta_x):
 	centralize(planets)
 	dump_planets(planets, 1000., active_planets=3, one_over_r=False)
 	data = run_simulation(debug=False)
-	np.savetxt("butterfly.txt", data, fmt='%.4f')
+	#np.savetxt("butterfly.txt", data, fmt='%.4f')
 	plot.plot(data, 1.5*r, interval=1, disabled_trajectories = (-1, -2))
 
 if __name__=="__main__":
 	initial_conditions(delta_x=0.01)	
-	#initial_conditions_vel()	
 	#two_bodies_all_solutions()
 	#random3body()
 	
