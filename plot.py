@@ -18,8 +18,9 @@ def plot(data, max_r=10,save_to=None, save_freq=100, interval=20, disabled_traje
 	colors[-2]= 50.
 	data=data[1:]
 	if compare:
-		ax = fig.add_subplot(211,autoscale_on=False, xlim=(0,20), ylim=(-40,-20))
-		ax2 = fig.add_subplot(212,autoscale_on=False, xlim=(0, 10))
+		compare_len = data.shape[0]//N_BODIES
+		ax = fig.add_subplot(211,autoscale_on=False, xlim=(-max_r, max_r), ylim=(-max_r, max_r))
+		ax2 = fig.add_subplot(212,autoscale_on=False, xlim=(0, compare_len), ylim=(0,.005))
 		dx = []
 		dx_plot = ax2.plot([],[])[0]
 	else:
@@ -51,9 +52,9 @@ def plot(data, max_r=10,save_to=None, save_freq=100, interval=20, disabled_traje
 			fig.savefig(path, dpi=100)
 		if compare:
 			dx.append(np.linalg.norm(coords[compare[0]] - coords[compare[1]]))
-			dx_plot.set_data(range(len(dx)), dx/dx[0])
-			ax2.set_ylim(min(dx[:10])/dx[0], max(dx[:10])/dx[0])
-			if(i==10): plt.show()
+			dx_plot.set_data(range(len(dx)), dx/dx[0]-1.)
+			if len(dx)==compare_len: plt.savefig("compare_short.png")
+			#if(len(dx)>=10): raise KeyboardInterrupt
 			return trajectories + [scat, dx_plot]
 		return trajectories + [scat]
 	anim = animation.FuncAnimation(fig, animate, np.arange(1, data.shape[0]//N_BODIES),

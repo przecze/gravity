@@ -4,10 +4,19 @@ import plot
 import os
 import sys
 
+name_map = {
+	"threeA": "collision",
+	"threeB": "ejection",
+	"threeC": "stable"
+}
+try:
+	sys.argv[1] = name_map[sys.argv[1]]
+except KeyError:
+	pass
 data = np.loadtxt(os.path.join("resources", sys.argv[1]+".txt"))
 kwargs = {
-	"butterfly" : {"max_r":150, "interval":10, "compare":[1,2]},
-	"stable" : {},
+	"butterfly" : {"max_r":150, "interval":30, "compare":[1,2]},
+	"stable" : {"max_r":15},
 	"collision" : {},
 	"ejection" : {},
   "two_bodies" : {"max_r":50}

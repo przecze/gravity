@@ -77,6 +77,23 @@ def random3body():
 	np.savetxt("random.txt", data, fmt='%.4f')
 	plot.plot(data, 2*r, interval=10)
 
+def triangle():
+	name = "random"
+	r = 10.
+	vel = .3
+	mass = 1.
+	rand = lambda : 2*(np.random.random() - 0.5)
+	planets = []
+	planets.append(Planet([r*rand(),r*rand(),0.],[vel*rand(),vel*rand()], 1.))
+	planets.append(Planet([r*rand(),r*rand(),0.],[vel*rand(),vel*rand()], 1.))
+	planets.append(Planet([r*rand(),r*rand(),1.],[vel*rand(),vel*rand()], 1.))
+	remove_momentum(planets)
+	centralize(planets)
+	dump_planets(planets, 1000.)
+	data = run_simulation()
+	np.savetxt("random.txt", data, fmt='%.4f')
+	plot.plot(data, 2*r, interval=10)
+
 def two_bodies_all_solutions():
 	name = "two_bodies_all"
 	r = 5.

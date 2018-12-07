@@ -3,6 +3,8 @@
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{listings}
+
 \begin{document}
 \title{Chaos Deterministyczny} 
 \author{Przemysław Czechowski} 
@@ -10,6 +12,19 @@
 
 \frame{\titlepage} 
 
+\begin{frame}[fragile]
+Problem dwóch ciał?\pause
+\begin{lstlisting}
+plot.py two_bodies
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+Problem dwóch ciał?
+\begin{lstlisting}
+plot.py two_bodies
+\end{lstlisting}
+\end{frame}
 
 \begin{frame}{Problem dwóch ciał, problem trzech ciał}
 Cześć interaktywna
@@ -30,17 +45,24 @@ Przykłady:
 \end{itemize} 
 \end{frame}
 
-\begin{frame}{Wykładniki Lyapunowa}
+\begin{frame}{Wykładniki Lyapunowa - teoria}
 \begin{equation}
 | \delta\mathbf{x}(t) | \approx e^{\lambda t} | \delta \mathbf{x}(0) |
 \end{equation}\pause
-Czas Lyapunowa
-\begin{equation}
-t_L = \frac{1}{\lambda}
-\end{equation}\pause
-Dla układu słonecznego $t=$ 5 milionów lat \cite{laskar1989numerical}
-
 \end{frame}
+
+\begin{frame}{Wykładniki Lyapunowa - praktyka}
+\includegraphics[width=\textwidth]{lyapunov}
+\end{frame}
+
+\begin{frame}{Wykładniki Lyapunowa - praktyka}
+\includegraphics[width=\textwidth]{lyapunov_short}
+\end{frame}
+
+\begin{frame}{Wykładniki Lyapunowa - praktyka}
+\includegraphics[width=\textwidth]{lyapunov_very_short}
+\end{frame}
+
 \begin{frame}
 \nocite{stewart1994czy}
 \bibliography{mybib}{}
