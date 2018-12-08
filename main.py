@@ -77,23 +77,6 @@ def random3body():
 	np.savetxt("random.txt", data, fmt='%.4f')
 	plot.plot(data, 2*r, interval=10)
 
-def triangle():
-	name = "random"
-	r = 10.
-	vel = .3
-	mass = 1.
-	rand = lambda : 2*(np.random.random() - 0.5)
-	planets = []
-	planets.append(Planet([r*rand(),r*rand(),0.],[vel*rand(),vel*rand()], 1.))
-	planets.append(Planet([r*rand(),r*rand(),0.],[vel*rand(),vel*rand()], 1.))
-	planets.append(Planet([r*rand(),r*rand(),1.],[vel*rand(),vel*rand()], 1.))
-	remove_momentum(planets)
-	centralize(planets)
-	dump_planets(planets, 1000.)
-	data = run_simulation()
-	np.savetxt("random.txt", data, fmt='%.4f')
-	plot.plot(data, 2*r, interval=10)
-
 def two_bodies_all_solutions():
 	name = "two_bodies_all"
 	r = 5.
@@ -132,8 +115,23 @@ def initial_conditions(delta_x):
 	#np.savetxt("butterfly.txt", data, fmt='%.4f')
 	plot.plot(data, 1.5*r, interval=1, disabled_trajectories = (-1, -2))
 
+def poincare():
+	r = 100.
+	big_mass = 100.
+	vel = 9.
+	planets = []
+	planets.append(Planet([0.,0.   ],[0.      ,0.      ], big_mass, stationary=True))
+	planets.append(Planet([0.4*r ,0.   ],[0.      ,0.      ], big_mass/2., stationary=True))
+	#planets.append(Planet([0.2*r ,0.2*r   ],[0.      ,0.      ], big_mass/2., stationary=True))
+	planets.append(Planet([r ,0.],[0.,vel, 0.], 0.))
+	dump_planets(planets, 1000., active_planets=2, one_over_r=True)
+	data = run_simulation(debug=False)
+	np.savetxt("poincare.txt", data, fmt='%.4f')
+	plot.plot(data, 120, interval=1, disabled_trajectories = [-1,-2], energy=[0], poincare=True)
+
 if __name__=="__main__":
-	initial_conditions(delta_x=0.01)	
+	poincare()
+	#initial_conditions(delta_x=0.01)	
 	#two_bodies_all_solutions()
 	#random3body()
 	

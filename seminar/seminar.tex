@@ -16,16 +16,16 @@
 \begin{frame}[fragile]
 Problem dwóch ciał?\pause
 \begin{lstlisting}
-play.py two_bodies
+./play.py two_bodies
 \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]
-Problem trzech ciał?
+Problem trzech ciał?\pause
 \begin{lstlisting}
-play.py threeA
-play.py threeB
-play.py threeC
+./play.py threeA
+./play.py threeB
+./play.py threeC
 \end{lstlisting}
 \end{frame}
 
@@ -37,19 +37,19 @@ play.py threeC
 \end{itemize} 
 
 1887 - nagroda Króla Szwecji: rozwiązać problem N ciał oddziałujących grawitacyjnie\pause\\
-Henri Poincaré zdobywa nagrodę, chociaż nie rozwiązał problemu\pause
+Henri Poincaré zdobywa nagrodę, chociaż nie rozwiązał problemu
 \end{frame}
 
 \begin{frame}{Chaos (wg. Royal Society, 1987)}
 \pause
-\textbf{ Stochastyczne zachowanie występujące w układzie daterministycznym}\pause
+\textbf{ Stochastyczne zachowanie występujące w układzie deterministycznym}\pause
 
 Przykłady:\pause
 \begin{itemize}[<+->]
 \item Problem >2 ciał
 \item Przewidywanie pogody
-\item Wzrost niestabilny
 \item Przepływ turbulentny
+\item Wzrost niestabilny
 	\begin{itemize}[<+->]
 		\item Palce lepkości
 		\item Wzrost sieci rzecznej
@@ -58,7 +58,7 @@ Przykłady:\pause
 \end{itemize} 
 \end{frame}
 
-\begin{frame}{Palce lepkości} \pause
+\begin{frame}{Palce lepkości}
 \centering
 \includegraphics[height=0.6\textheight]{viscous_fingers}
 \url{https://www.youtube.com/watch?v=BgeKR9HuY9s}
@@ -66,7 +66,7 @@ Przykłady:\pause
 \end{frame}
 
 \begin{frame}[fragile]
-\textbf{ Stochastyczne zachowanie występujące w układzie daterministycznym}
+\textbf{Stochastyczne zachowanie występujące w układzie deterministycznym}
 \begin{lstlisting}
 play.py butterfly
 \end{lstlisting}
@@ -122,7 +122,7 @@ Wymagają innego opisu
 \end{frame}
 
 \begin{frame}{Przekroje Poincaré} \pause
-Przepływ w N wymiarach $\leftarrow$ Mapa w N-1 wymiarach\\ \pause
+Przepływ w N wymiarach $\rightarrow$ Mapa w N-1 wymiarach\\ \pause
 Kiedy trajektoria znowu przejdzie przez powierzchnię?\\ \pause
 \end{frame}
 
@@ -136,13 +136,13 @@ Mapa - od jednego zderzenia do kolejnego
 \begin{frame}{Przekroje Poincaré - przykład}
 \centering
 \includegraphics[height=0.7\textheight]{poincare_section}\\
-Cały kwadrat mapuje się na zielony obszar w pierwszej iteracji (mapa nieodwracalna)
+Zielony obszar mapuje się na cały kwadrat w pierwszej iteracji
 \end{frame}
 
 \begin{frame}{Entropia metryczna} \pause
 	Załóżmy, że mamy odwracalną mapę $M$ na zbiorze $S$.\pause \\
 	Chcemy opisać ,,chaotyczność`` $M$ - jak bardzo miesza $S$.\\ \pause
-	Zbiór $W$ dzielimy na trzy podzbiory: $\{W_1, W_2, W_3\} = \{W_i\}$.\pause
+	Zbiór $W$ dzielimy na trzy podzbiory: $\{W_1, W_2, W_3\} = \{W_i\}$.\\\pause
 	Wiemy, że w kolejnych $n$ iteracjach mapy punkt $x_0$ trafiał do zbiorów
   $W_{i_1}, W_{i_2}, \dots W_{i_n}$\pause\\
 	Co możemy powiedzieć o warunku początkowym $x_0$?\pause
@@ -174,7 +174,7 @@ Cały kwadrat mapuje się na zielony obszar w pierwszej iteracji (mapa nieodwrac
 	\begin{equation*}
 		h(\mu, M) = \sup_{\{W_i\}}\lim_{n\to\infty}\frac{1}{n}H(\mu, \{W_i^{(n)}\})
 	\end{equation*}
-	Fakt: 
+	Fakt: dla dużych $n$: 
 	\begin{equation*}
 		H(\mu, \{W^{(n)}_i\}) - H(\mu, \{W^{(n)}_i\}) = h(\mu)
 	\end{equation*}

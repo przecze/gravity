@@ -19,6 +19,8 @@ kwargs = {
 	"stable" : {"max_r":15},
 	"collision" : {},
 	"ejection" : {},
-  "two_bodies" : {"max_r":50}
+  "two_bodies" : {"max_r":50},
+  "poincare" : {"max_r":120, "interval":1, "disabled_trajectories":[-1,-2], "energy":[0],
+								 "poincare":True}
 }[sys.argv[1]]
 plot.plot(data, **kwargs)

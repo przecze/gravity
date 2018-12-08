@@ -9,7 +9,8 @@ import time
 import sys
 
 save_count = 0
-def plot(data, max_r=10,save_to=None, save_freq=100, interval=20, disabled_trajectories=[], compare=None):
+def plot(data, max_r=10,save_to=None, save_freq=100, interval=20,
+				disabled_trajectories=[], compare=None, energy=None, poincare=False):
 	fig = plt.figure()
 	N_BODIES = int(data[0][0])
 	disabled_trajectories = {x%N_BODIES for x in disabled_trajectories}
@@ -23,6 +24,13 @@ def plot(data, max_r=10,save_to=None, save_freq=100, interval=20, disabled_traje
 		ax2 = fig.add_subplot(212,autoscale_on=False, xlim=(0, compare_len), ylim=(0,.005))
 		dx = []
 		dx_plot = ax2.plot([],[])[0]
+	if poincare:
+		ax = fig.add_subplot(211,autoscale_on=False, xlim=(-max_r, max_r), ylim=(-max_r, max_r))
+		ax2 = fig.add_subplot(212,autoscale_on=False, xlim=(-max_r, max_r), ylim=(-np.pi,np.pi))
+		ax.plot(np.linspace(-max_r,max_r, num=10), np.zeros(10), linestyle="--")
+		sections = []
+		sections_colors = []
+		poincare_section = ax2.scatter([],[],s=10,cmap=plt.get_cmap("seismic"))
 	else:
 		ax = fig.add_subplot(111,autoscale_on=False, xlim=(-max_r,max_r), ylim=(-max_r,max_r))
 	ax.grid()
@@ -50,6 +58,22 @@ def plot(data, max_r=10,save_to=None, save_freq=100, interval=20, disabled_traje
 			save_count+=1
 			os.makedirs(os.path.dirname(path), exist_ok=True)
 			fig.savefig(path, dpi=100)
+		if energy:
+			for body in energy:
+				e_kin = np.linalg.norm(coords[body][3:])**2/2.
+				#e_pot = -100./np.linalg.norm(coords[body][:3] - coords[1][:3])
+				#e_pot+= -100./np.linalg.norm(coords[body][:3] - coords[2][:3])
+				e_pot = 0
+				e_pot+= 50.*np.log(np.linalg.norm(coords[body][:3] - coords[1][:3]))
+				e_pot+= 100.*np.log(np.linalg.norm(coords[body][:3] - coords[1][:3]))
+				#print(e_kin+e_pot,e_kin,e_pot)
+		if poincare and len(history[0])>=2:
+			if history[0][-2][1]*history[0][-1][1]<0:
+				angle = np.angle(np.complex(history[0][-1][3], history[0][-1][4]))
+				sections.append([history[0][-1][0], angle])
+				print(sections[-1])
+				poincare_section.set_offsets(sections)
+			return trajectories + [scat, poincare_section]
 		if compare:
 			dx.append(np.linalg.norm(coords[compare[0]] - coords[compare[1]]))
 			dx_plot.set_data(range(len(dx)), dx/dx[0]-1.)
