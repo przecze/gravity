@@ -37,7 +37,10 @@ Problem trzech ciał?\pause
 \end{itemize} 
 
 1887 - nagroda Króla Szwecji: rozwiązać problem N ciał oddziałujących grawitacyjnie\pause\\
-Henri Poincaré zdobywa nagrodę, chociaż nie rozwiązał problemu
+Henri Poincaré zdobywa nagrodę, chociaż nie rozwiązał problemu\\
+\pause
+\centering
+\includegraphics[height=0.4\textheight]{poincare_curie}
 \end{frame}
 
 \begin{frame}{Chaos (wg. Royal Society, 1987)}
@@ -68,7 +71,7 @@ Przykłady:\pause
 \begin{frame}[fragile]
 \textbf{Stochastyczne zachowanie występujące w układzie deterministycznym}
 \begin{lstlisting}
-play.py butterfly
+./play.py butterfly
 \end{lstlisting}
 \end{frame}
 
@@ -123,7 +126,21 @@ Wymagają innego opisu
 
 \begin{frame}{Przekroje Poincaré} \pause
 Przepływ w N wymiarach $\rightarrow$ Mapa w N-1 wymiarach\\ \pause
-Kiedy trajektoria znowu przejdzie przez powierzchnię?\\ \pause
+W którym miejscu trajektoria znowu przetnie powierzchnię?\\ \pause
+\end{frame}
+
+\begin{frame}[fragile]{Przekroje Poincaré - przykład}
+\begin{itemize}[<+->]
+	\item Weźmy ciało w polu dwóch ciężkich, nieruchomych ciał
+	\item Ruch ograniczony do płaszczyzny $(x,y)$
+	\item Siła $1/r$ zamiast $1/r^2$
+	\item $(x, y, \alpha_v)$ - przestrzeń stanów (po uwzględnieniu $E=\text{const}$)
+	\item Przekrój Poincaré dla $y=0$; zaznaczamy punkty $(x, 0, \alpha_v)$ przez które przechodzi trajektoria
+\end{itemize} 
+\pause
+\begin{lstlisting}
+./play.py poincare
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}{Przekroje Poincaré - przykład}
@@ -219,9 +236,14 @@ Zielony obszar mapuje się na cały kwadrat w pierwszej iteracji
 \end{frame}
 
 \begin{frame}[fragile]
-Dziękuję za uwagę
+Podziękowania
+\begin{itemize}
+	\item prof. Jakub Tworzydło (IFT)
+	\item MP Kolanowski
+\end{itemize} 
+\pause
 \begin{lstlisting}
-play.py stable
+./play.py stable
 \end{lstlisting}
 \end{frame}
 
