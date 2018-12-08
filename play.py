@@ -15,7 +15,7 @@ except KeyError:
 	pass
 data = np.loadtxt(os.path.join("resources", sys.argv[1]+".txt"))
 kwargs = {
-	"butterfly" : {"max_r":150, "interval":30, "compare":[1,2]},
+	"butterfly" : {"max_r":150, "interval":30},
 	"stable" : {"max_r":15},
 	"collision" : {},
 	"ejection" : {},
