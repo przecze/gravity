@@ -181,31 +181,48 @@ Cały kwadrat mapuje się na zielony obszar w pierwszej iteracji (mapa nieodwrac
  $h(\mu)$ to informacja o $x_0$ jaką dostajemy z każdą kolejną iteracją
 \end{frame}
 
-%\begin{frame}{Entropia topologiczna}
-%	Zamiast miary - liczenie zbiorów
-%	\begin{equation*}
-%		h_T(M) = \sup_{\{W_i\}}\lim_{n\to\infty}\frac{1}{n}|{W_i^{(n)}\}|)
-%	\end{equation*}
-%	\begin{itemize}
-%		\item $h_\mu, h_T > 0 $ dla układów chaotycznych i zerowe dla niechaotycznych
-%		\item Trudne do obliczenia dla rzeczywistych układów
-%	\end{itemize} 
-%\end{frame}
+\begin{frame}{Entropia topologiczna}
+	Zamiast miary - liczenie zbiorów
+	\begin{equation*}
+		h_T(M) = \sup_{\{W_i\}}\lim_{n\to\infty}\frac{1}{n}|\{W_i^{(n)}\}|)
+	\end{equation*}
+	\begin{itemize}
+		\item $h_\mu, h_T > 0 $ dla układów chaotycznych i zerowe dla niechaotycznych
+		\item Trudne do obliczenia dla rzeczywistych układów
+	\end{itemize} 
+\end{frame}
 
 \begin{frame}{Epilog - stabilność układu słonecznego}
 	\begin{equation*}
 	| \delta\mathbf{x}(t) | \approx e^{\lambda t} | \delta \mathbf{x}(0) |
 	\end{equation*}
 	\pause
-	Dla układu słonecznego $\lambda \approx 1/1\ \Myr$ \cite(laskar1989numerical)
+	Dla układu słonecznego $\lambda = 1/5\ Myr^{-1}$ \cite{laskar1989numerical}\pause\\
+	\textit{In particular, predictability of the orbits of the inner planets, including
+	the Earth, is lost within a few tens of millions of years. This does not mean
+	that after such a short timespan we will see catastrophic events such as a
+	crossing of the orbits of Venus and Earth; but the traditional tools of
+	quantitative celestial mechanics (numerical integrations or analytical
+	theories), which aim at unique solutions from given initial conditions, will
+	fail to predict such events. The problem of the stability of the Solar System
+	will have to be set up again, and the qualitative methods initiated by Poincaré
+	definitely need to replace quantitative methods in this analysis.}
 \end{frame}
 
 \begin{frame}
+\nocite{ht_scholarpedia}
 \nocite{stewart1994czy}
 \nocite{ott2002chaos}
 \nocite{ChaosBook}
 \bibliography{mybib}{}
 \bibliographystyle{plain}
+\end{frame}
+
+\begin{frame}[fragile]
+Dziękuję za uwagę
+\begin{lstlisting}
+play.py stable
+\end{lstlisting}
 \end{frame}
 
 \end{document}
