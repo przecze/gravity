@@ -18,6 +18,7 @@ def plot(data, max_r=10,save_to=None, save_freq=100, interval=20,
 	colors[-1]= 100.
 	colors[-2]= 50.
 	data=data[1:]
+	print("Preparing plots")
 	if compare:
 		compare_len = data.shape[0]//N_BODIES
 		ax = fig.add_subplot(211,autoscale_on=False, xlim=(-max_r, max_r), ylim=(-max_r, max_r))
@@ -81,6 +82,7 @@ def plot(data, max_r=10,save_to=None, save_freq=100, interval=20,
 			#if(len(dx)>=10): raise KeyboardInterrupt
 			return trajectories + [scat, dx_plot]
 		return trajectories + [scat]
+	print("Starting animation")
 	anim = animation.FuncAnimation(fig, animate, np.arange(1, data.shape[0]//N_BODIES),
 															  interval=interval, blit=True)
 	#anim.save("evolution.gif", writer="imagemagick")

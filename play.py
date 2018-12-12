@@ -13,7 +13,9 @@ try:
 	sys.argv[1] = name_map[sys.argv[1]]
 except KeyError:
 	pass
+print("Loading data...",)
 data = np.loadtxt(os.path.join("resources", sys.argv[1]+".txt"))
+print("Loaded")
 kwargs = {
 	"butterfly" : {"max_r":150, "interval":30},
 	"stable" : {"max_r":15},
