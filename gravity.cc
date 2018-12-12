@@ -4,7 +4,9 @@
 #include<array>
 #include<iostream>
 #include<functional>
-#include <boost/numeric/odeint.hpp>
+#include<boost/numeric/odeint.hpp>
+#include "point.h"
+#include "natural_units.h"
 
 enum index_type {
 	pos_x = 0,
@@ -15,6 +17,17 @@ enum index_type {
 	vel_z = 5,
 };
 
+void foo() {
+	using namespace natural_units;
+	auto pos = point(1.*unit_l);
+	auto mass = point(1.*unit_m);
+	auto mom = pos*mass;
+	auto mom2 = pos*(1.*unit_m);
+	auto x = norm(mom2);
+	auto y = point(3.);
+	auto z = norm(y);
+}
+	
 using ContainerType = std::array<std::valarray<double>, 3>;
 
 ContainerType get_container(size_t size) {
