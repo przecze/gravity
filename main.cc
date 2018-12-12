@@ -3,9 +3,13 @@
 #include<valarray>
 #include<fstream>
 
+#include "natural_units.h"
 #include "gravity.h"
 
+
 void remove_total_momentum(std::vector<Body>& bodies, int active_bodies) {
+	using namespace natural_units;
+	using boost::units::quantity;
 	auto total_p = point_type{0.,0.,0.};
 	for(int i = 0; i<active_bodies; ++i) {
 		const auto& body = bodies[i];
