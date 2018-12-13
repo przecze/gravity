@@ -19,20 +19,25 @@ using natural_system = make_system<
     mass_base_unit,
     time_base_unit>::type;
 
-using dimensionless =  unit<dimensionless_type,natural_system>;
+using dimensionless_unit=  unit<dimensionless_type,natural_system>;
 
-using	length=	unit<length_dimension,natural_system>        ;
-using	mass  =	unit<mass_dimension,natural_system>          ;
-using	time  =	unit<time_dimension,natural_system>          ;
+using	length_unit   =	unit<length_dimension,natural_system>;
+using	mass_unit     =	unit<mass_dimension,natural_system>;
+using	time_unit     =	unit<time_dimension,natural_system>;
 
-using	area  =	unit<area_dimension,natural_system>          ;
-using	energy=	unit<energy_dimension,natural_system>        ;
-using	velocity =	unit<velocity_dimension,natural_system>        ;
-using	momentum =	unit<momentum_dimension,natural_system>        ;
+using	energy_unit   =	unit<energy_dimension,natural_system>;
+using	velocity_unit =	unit<velocity_dimension,natural_system>;
+using	momentum_unit =	unit<momentum_dimension,natural_system>;
 
-BOOST_UNITS_STATIC_CONSTANT(unit_l, length);
-BOOST_UNITS_STATIC_CONSTANT(unit_m, mass);
-BOOST_UNITS_STATIC_CONSTANT(unit_v, velocity);
-BOOST_UNITS_STATIC_CONSTANT(unit_t, time);
-BOOST_UNITS_STATIC_CONSTANT(unit_e, energy);
+BOOST_UNITS_STATIC_CONSTANT(unit_l, length_unit);
+BOOST_UNITS_STATIC_CONSTANT(unit_m, mass_unit);
+BOOST_UNITS_STATIC_CONSTANT(unit_v, velocity_unit);
+BOOST_UNITS_STATIC_CONSTANT(unit_t, time_unit);
+BOOST_UNITS_STATIC_CONSTANT(unit_e, energy_unit);
+
+using Length   = quantity<length_unit>;
+using Velocity = quantity<velocity_unit>;
+using Time     = quantity<time_unit>;
+using Mass     = quantity<mass_unit>;
+using Energy   = quantity<energy_unit>;
 }
