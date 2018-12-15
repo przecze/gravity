@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 3.10)
 project (gravity)
 set(CMAKE_CXX_STANDARD 17)
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fdiagnostic-color=always")
 add_library(gravity gravity.cc)
 add_executable(main main.cc)
 target_link_libraries(main gravity)

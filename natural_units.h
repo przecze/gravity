@@ -27,6 +27,7 @@ using	time_unit     =	unit<time_dimension,natural_system>;
 
 using	energy_unit   =	unit<energy_dimension,natural_system>;
 using	velocity_unit =	unit<velocity_dimension,natural_system>;
+using	acceleration_unit =	unit<acceleration_dimension,natural_system>;
 using	momentum_unit =	unit<momentum_dimension,natural_system>;
 
 BOOST_UNITS_STATIC_CONSTANT(unit_l, length_unit);
@@ -35,9 +36,10 @@ BOOST_UNITS_STATIC_CONSTANT(unit_v, velocity_unit);
 BOOST_UNITS_STATIC_CONSTANT(unit_t, time_unit);
 BOOST_UNITS_STATIC_CONSTANT(unit_e, energy_unit);
 
-using Length   = quantity<length_unit>;
-using Velocity = quantity<velocity_unit>;
-using Time     = quantity<time_unit>;
-using Mass     = quantity<mass_unit>;
-using Energy   = quantity<energy_unit>;
+using Length       = quantity<length_unit>;
+using Velocity     = quantity<velocity_unit>;
+using Acceleration = quantity<acceleration_unit>;
+using Time         = quantity<time_unit>;
+using Mass         = quantity<mass_unit>;
+using Energy       = quantity<energy_unit>;
 }

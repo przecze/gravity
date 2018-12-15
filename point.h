@@ -102,7 +102,7 @@ point<T, Dim> operator-(const point<T, Dim> &p) {
 template<class T, class U, size_t Dim>
 auto operator+(const point<T, Dim> &p, const point<U, Dim> &u) {
     point<decltype(p[0]+u[0]), Dim> tmp;
-    for(size_t i=0 ; i<Dim ; ++i) tmp[i] = p[i] - u[i];
+    for(size_t i=0 ; i<Dim ; ++i) tmp[i] = p[i] + u[i];
     return tmp;
 }
 
@@ -126,8 +126,8 @@ auto operator/(const point<T, Dim> &p, const point<U, Dim> &u) {
 }
 
 template<class T, class U, size_t Dim>
-auto operator*(const point<T, Dim> &p, const U &u) {
-    point<decltype(p[0]*u), Dim> tmp;
+auto operator*(const U &u, const point<T, Dim> &p) {
+    point<decltype(u*p[0]), Dim> tmp;
     for(size_t i=0 ; i<Dim ; ++i) tmp[i] = p[i]*u;
     return tmp;
 }
