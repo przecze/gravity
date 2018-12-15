@@ -149,10 +149,13 @@ auto norm(const point<T, Dim> &p) {
     return scalar_prod(p, p);
 }
 
-template<class T, size_t Dim>
-auto abs(const point<T, Dim> &p) {
-    return boost::units::root(norm(p));
-}
+//root is not working
+
+//template<class T, size_t Dim>
+//auto abs(const point<T, Dim> &p) {
+//		using namespace boost::units;
+//    return root<decltype(p[0]*p[0]), 2>(norm(p));
+//}
 
 template<class T, size_t Dim>
 std::ostream& operator<<(std::ostream &out, const point<T, Dim> &p) {

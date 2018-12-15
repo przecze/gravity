@@ -20,6 +20,7 @@ public:
 	}
 
 	std::vector<Body::state_type> predict(const Body& body, natural_units::Time t, natural_units::Time dt) {
+		std::vector<Body::state_type> predictions;
 		using namespace boost::numeric::odeint;
 		using namespace natural_units;
 		auto current_t = .0*unit_t;
@@ -38,11 +39,12 @@ public:
 							std::make_pair(std::ref(state.first), std::ref(state.second)),
 							t, dt);
 			current_t += dt;
+			predictions.push_back(state);
 		}
-		return {};
+		return predictions;
 	}
 
-	Model& add_effect(std::unique_ptr<Effect>&& effect) {
+	Model& add_effect(std::shared_ptr<Effect>&& effect) {
 		effects.push_back(std::move(effect));
 	}
 private:
