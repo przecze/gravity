@@ -48,5 +48,9 @@ using G_dimension =  derived_dimension<mass_base_dimension,-1,
 																			length_base_dimension,3,
 																			time_base_dimension,-2>::type;
 using G_unit = unit<G_dimension, natural_system>;
-BOOST_UNITS_STATIC_CONSTANT(G, G_unit);
+
+using mu_dimension =  derived_dimension<length_base_dimension,3,
+																				time_base_dimension,-2>::type;
+using mu_unit = unit<mu_dimension, natural_system>;
+BOOST_UNITS_STATIC_CONSTANT(mu, mu_unit);
 }

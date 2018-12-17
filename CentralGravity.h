@@ -15,6 +15,6 @@ public:
 		using namespace boost::units;
 		using namespace natural_units;
 		auto r3 = pow<static_rational<3,2>>(norm(q));
-		return (M / r3 * G) * (-q);
+		return (mu/r3) * (-q);
 	}
 };
