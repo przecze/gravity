@@ -29,6 +29,7 @@ using	energy_unit   =	unit<energy_dimension,natural_system>;
 using	velocity_unit =	unit<velocity_dimension,natural_system>;
 using	acceleration_unit =	unit<acceleration_dimension,natural_system>;
 using	momentum_unit =	unit<momentum_dimension,natural_system>;
+using plane_angle_unit = unit<plane_angle_dimension,natural_system>;
 
 BOOST_UNITS_STATIC_CONSTANT(unit_l, length_unit);
 BOOST_UNITS_STATIC_CONSTANT(unit_m, mass_unit);
@@ -43,6 +44,7 @@ using Time         = quantity<time_unit>;
 using Mass         = quantity<mass_unit>;
 using Energy       = quantity<energy_unit>;
 using Dimensionless= quantity<dimensionless_unit>;
+using Radians      = quantity<plane_angle_unit>;
 
 using G_dimension =  derived_dimension<mass_base_dimension,-1,
 																			length_base_dimension,3,
