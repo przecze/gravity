@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/operators.hpp>
 #include <boost/units/pow.hpp>
+#include <boost/geometry.hpp>
 #include <ostream>
 
 template< class T , size_t Dim = 3>
@@ -8,8 +9,8 @@ class point {
 public:
 
 	const static size_t dim = Dim;
-	typedef T value_type;
-	typedef point< value_type , dim > point_type;
+	using value_type = T;
+	using point_type = point< value_type , dim >;
 
 	point( void )
 	{
@@ -86,8 +87,6 @@ public:
 		return tmp;
 	}
 
-private:
-
 	T m_val[dim];
 };
 	
@@ -149,13 +148,11 @@ auto norm(const point<T, Dim> &p) {
     return scalar_prod(p, p);
 }
 
-//root is not working
-
-//template<class T, size_t Dim>
-//auto abs(const point<T, Dim> &p) {
-//		using namespace boost::units;
-//    return root<decltype(p[0]*p[0]), 2>(norm(p));
-//}
+template<class T, size_t Dim>
+auto abs(const point<T, Dim> &p) {
+		using namespace boost::units;
+    return pow<static_rational<1,2>>(norm(p));
+}
 
 template<class T, size_t Dim>
 std::ostream& operator<<(std::ostream &out, const point<T, Dim> &p) {
@@ -163,3 +160,47 @@ std::ostream& operator<<(std::ostream &out, const point<T, Dim> &p) {
 		for(size_t i=1; i<Dim; ++i) out << " " << p[i];
 		return out;
 }
+
+
+namespace boost
+{
+    namespace geometry
+    {
+        namespace traits
+        {
+						template<>
+						template<class T, size_t Dim>
+            struct tag<point<T, Dim>>
+            { using type = point_tag; };
+
+						template<>
+						template<class T, size_t Dim>
+            struct coordinate_type<point<T, Dim>>
+            { using type = T; };
+
+						template<>
+						template<class T, size_t Dim>
+            struct coordinate_system<point<T,Dim>>
+            { using type = cs::cartesian; };
+
+						template<>
+						template<class T, size_t Dim>
+            struct dimension<point<T,Dim>> : boost::mpl::int_<Dim> {};
+
+						template<>
+						template<class T, size_t Dim, size_t I>
+            struct access<point<T,Dim>, I>
+            {
+                static T get(point<T,Dim> const& p)
+                {
+                    return p.m_val[I];
+                }
+
+                static void set(point<T,Dim>& p, T const& value)
+                {
+                    p.m_val[I] = value;
+                }
+            };
+        }
+    }
+} // namespace boost::geometry::traits

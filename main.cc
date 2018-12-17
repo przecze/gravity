@@ -1,6 +1,7 @@
 #include<memory>
 #include<iostream>
 #include "Model.h"
+#include "Orbit.h"
 #include "CentralGravity.h"
 #include "natural_units.h"
 
