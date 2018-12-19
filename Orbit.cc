@@ -26,7 +26,7 @@ Orbit Orbit::get_orbit(Body body) {
 	const auto h2 = norm(h_vec);
 	const auto h  = sqrt(h2);
 
-	const auto a = 1./(v2/mu - 2./r);
+	const auto a = 1./(2./r - v2/mu);
 
 	const auto e = pow<static_rational<1,2>>(-(h2/mu/a - 1.));
 
