@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "CentralGravity.h"
 #include "natural_units.h"
+#include<boost/units/systems/si/io.hpp>
 
 	
 template<class T>
@@ -19,9 +20,15 @@ void print_state(const Body::state_type& t) {
 
 int main(int argc, char *argv[]) {
 	using namespace natural_units;
-	auto model = Model{};
-	model.add_effect(std::make_shared<CentralGravity>(1.*unit_m));
-	auto a = Body{{1.,0.,0.,},{0.,0.,1.}, 1.};
-	auto pred = model.predict(a, 100.*unit_t, 1.*unit_t);
-	std::for_each(pred.begin(), pred.end(), print_state);
+	using namespace boost::units;
+	auto a = Length{1.*unit_l};
+	auto b = quantity<si::length>{a};
+	auto c = quantity<si::mass>{1.*unit_m};
+	auto d = quantity<si::velocity>{1.*unit_v};
+	auto muu = quantity<si_mu_unit>{1*mu};
+	std::cout<<b<<std::endl;
+	std::cout<<c<<std::endl;
+	std::cout<<muu<<std::endl;
+	//auto pred = model.predict(a, 100.*unit_t, 1.*unit_t);
+	//std::for_each(pred.begin(), pred.end(), print_state);
 }
