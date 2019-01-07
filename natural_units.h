@@ -62,9 +62,9 @@ using si_mu_unit = unit<mu_dimension, si::system>;
 }
 
 //BOOST_UNITS_DEFINE_CONVERSION_FACTOR(natural_units::mu_base_unit, natural_units::si_mu_unit, long long int, 3.986004419e14);
-BOOST_UNITS_DEFINE_CONVERSION_FACTOR(natural_units::time_base_unit, natural_units::si::second_base_unit, long long int, 806.8041031852044);
-BOOST_UNITS_DEFINE_CONVERSION_FACTOR(natural_units::length_base_unit, boost::units::si::meter_base_unit, long long int, 6.3781e6);
-BOOST_UNITS_DEFINE_CONVERSION_FACTOR(natural_units::mass_base_unit, boost::units::si::kilogram_base_unit, long long int, 1.);
+BOOST_UNITS_DEFINE_CONVERSION_FACTOR(natural_units::time_base_unit, natural_units::si::second_base_unit, long double, 806.8041031852044);
+BOOST_UNITS_DEFINE_CONVERSION_FACTOR(natural_units::length_base_unit, boost::units::si::meter_base_unit, long double, 6.3781e6);
+BOOST_UNITS_DEFINE_CONVERSION_FACTOR(natural_units::mass_base_unit, boost::units::si::kilogram_base_unit, long double, 1.);
 
 namespace natural_units {
 
@@ -80,6 +80,12 @@ auto make_natural(quantity<unit<D, System>> t) {
 	const auto a = TargetType::from_value(1.);
 	const auto conversion_factor = SourceType{a}.value();
 	return TargetType::from_value(t.value()/conversion_factor);
+}
+
+template<class D>
+auto make_si(quantity<unit<D, natural_system>> t) {
+	using TargetType = quantity<unit<D, si::system>>;
+	return TargetType{t};
 }
 
 template<class T>
