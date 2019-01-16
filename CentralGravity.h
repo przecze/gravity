@@ -6,8 +6,6 @@
 
 class CentralGravity: public Effect {
 public:
-	natural_units::Mass M;
-	CentralGravity(natural_units::Mass M): M(M) {}
 	Vector3<natural_units::Acceleration> calculate_acceleration(
 			const Vector3<natural_units::Length>& q,
 			const Vector3<natural_units::Velocity>& v,
