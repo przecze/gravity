@@ -61,6 +61,7 @@ using G_unit = unit<G_dimension, natural_system>;
 using mu_dimension =  derived_dimension<length_base_dimension,3,
 																				time_base_dimension,-2>::type;
 using mu_unit = unit<mu_dimension, natural_system>;
+BOOST_UNITS_STATIC_CONSTANT(G, G_unit);
 BOOST_UNITS_STATIC_CONSTANT(mu, mu_unit);
 
 using si_mu_unit = unit<mu_dimension, si::system>;

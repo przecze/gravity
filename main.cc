@@ -2,6 +2,7 @@
 #include<iostream>
 #include "Model.h"
 #include "Orbit.h"
+#include "Energy.h"
 #include "CentralGravity.h"
 #include "natural_units.h"
 #include<boost/units/systems/si/io.hpp>
@@ -18,7 +19,8 @@ std::ostream& operator<<(std::ostream& ost, const Vector3<natural_units::quantit
 
 
 void print_cartesian(const Body::state_type& t) {
-	std::cout<<"Q: "<<t.first<<"\nV: "<<t.second<<std::endl;
+	std::cout<<"Q: "<<t.first<<std::endl;
+  std::cout<<"V: "<<t.second<<std::endl;
 }
 
 void print_kepler(const Body::state_type& state) {
@@ -33,7 +35,9 @@ void print_kepler(const Body::state_type& state) {
 }
 
 void print_prediction(const Model::Prediction& prediction) {
-  std::cout<<"T = "<<make_si(prediction.time)<<std::endl;
+  std::cout<<"T = "<<make_si(prediction.time)
+    <<" E= "<<make_si(TotalEnergy(prediction.state.first, prediction.state.second))
+    <<std::endl;
   print_cartesian(prediction.state);
   print_kepler(prediction.state);
 }
@@ -49,13 +53,13 @@ int main(int argc, char *argv[]) {
 	};
 	print_prediction(Model::Prediction(std::make_pair(b.pos, b.vel), 0*unit_t));
 
-	auto pred = model.predict(b, 1.*unit_t, .1*unit_t);
+	auto pred = model.predict(b, 100.*unit_t, 0.1*unit_t);
 	auto passed_time = Time{0.*unit_t};
-	for(int i = 0; i < pred.size()-1; ++i) {
+	for(int i = 1; i < pred.size()-1; ++i) {
 		passed_time +=.1*unit_t;
-		if((pred[i].state.first[0]*pred[i+1].state.first[0]).value()<0) {
+    print_prediction(pred[i]);
+		if(pred[i-1].state.first[0].value()<0 and pred[i].state.first[0].value()>0) {
 			break;
 		}
 	}
-	std::for_each(pred.begin(), pred.end(), print_prediction);
 }
