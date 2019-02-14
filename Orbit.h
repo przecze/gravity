@@ -11,4 +11,5 @@ struct Orbit {
 	natural_units::Length semimajor_axis;
 	natural_units::Dimensionless eccentricity;
 	static Orbit get_orbit(Body body);
+	static Orbit get_orbit(Body::state_type state);
 };

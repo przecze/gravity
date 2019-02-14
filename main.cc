@@ -21,8 +21,15 @@ void print_cartesian(const Body::state_type& t) {
 	std::cout<<"Q: "<<t.first<<"\nV: "<<t.second<<std::endl;
 }
 
-void print_kepler(const Body::state_type& t) {
-	std::cout<<"Q: "<<t.first<<"\nV: "<<t.second<<std::endl;
+void print_kepler(const Body::state_type& state) {
+  auto orbit = Orbit::get_orbit(state);
+  std::cout
+    <<" inc: "<<orbit.inclination<<std::endl
+    <<" lan: "<<orbit.longitude_ascending_node<<std::endl
+    <<" t_a: "<<orbit.true_anomaly<<std::endl
+    <<" aop: "<<orbit.argument_of_periapsis<<std::endl
+    <<" sma: "<<make_si(orbit.semimajor_axis)<<std::endl
+    <<" ecc: "<<orbit.eccentricity<<std::endl;
 }
 
 void print_prediction(const Model::Prediction& prediction) {

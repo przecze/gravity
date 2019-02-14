@@ -5,8 +5,11 @@
 #include<boost/mpl/assert.hpp>
 #include<boost/units/cmath.hpp>
 
-
 Orbit Orbit::get_orbit(Body body) {
+  return Orbit::get_orbit(std::make_pair(body.pos, body.vel));
+}
+
+Orbit Orbit::get_orbit(Body::state_type state) {
 	auto orbit = Orbit{};
 	using boost::geometry::cross_product;
 	using boost::units::static_rational;
@@ -15,14 +18,14 @@ Orbit Orbit::get_orbit(Body body) {
 	using boost::units::atan2;
 	using natural_units::mu;
 
-	const auto v2 = norm(body.vel);
+	const auto v2 = norm(state.second);
 	const auto v  = sqrt(v2);
 
-	const auto r_vec = body.pos;
+	const auto r_vec = state.first;
 	const auto r2 = norm(r_vec);
 	const auto r  = sqrt(r2);
 
-	const auto h_vec = cross_product<decltype(body.pos*body.vel)>(body.pos, body.vel);
+	const auto h_vec = cross_product<decltype(state.first*state.second)>(state.first, state.second);
 	const auto h2 = norm(h_vec);
 	const auto h  = sqrt(h2);
 
