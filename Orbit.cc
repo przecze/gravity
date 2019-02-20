@@ -33,14 +33,13 @@ Orbit Orbit::get_orbit(Body::state_type state) {
 
 	const auto e = pow<static_rational<1,2>>(-(h2/mu/a - 1.));
 
-	const auto lan = atan2(- h_vec.m_val[0],h_vec.m_val[1]);
+	const auto lan = atan2(- h_vec[0],h_vec[1]);
 
-	const auto i = atan2(h_vec.m_val[0],h_vec.m_val[2]*sin(lan));
+	const auto i = atan2(h_vec[0],h_vec[2]*sin(lan));
 
 	const auto w = atan2(1.*h*v,h2/r-1.*mu);
 
-	const auto u = atan2(r_vec.m_val[2]/sin(i),
-												r_vec.m_val[0]*cos(lan) + r_vec.m_val[1]*sin(lan));
+	const auto u = atan2(r_vec[2]/sin(i), r_vec[0]*cos(lan) + r_vec[1]*sin(lan));
 
 	const auto omega = u - w;
 

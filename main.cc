@@ -31,8 +31,8 @@ void print_kepler(const Body::state_type& state) {
     <<" t_a: "<<std::setprecision(4)<<orbit.true_anomaly
     <<" aop: "<<std::setprecision(4)<<orbit.argument_of_periapsis
     <<" sma: "<<std::setprecision(4)<<make_si(orbit.semimajor_axis)
-    <<" ecc: "<<std::setprecision(4)<<orbit.eccentricity<<std::endl
-    ;
+    <<" ecc: "<<std::setprecision(4)<<orbit.eccentricity
+    <<std::endl;
 }
 
 void print_prediction(const Model::Prediction& prediction) {
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 	};
 	print_prediction(Model::Prediction(std::make_pair(b.pos, b.vel), 0*unit_t));
 
-	auto pred = model.predict(b, 1.*unit_t, .1*unit_t);
+	auto pred = model.predict(b, 5.*unit_t, .1*unit_t);
 	auto passed_time = Time{0.*unit_t};
 	for(int i = 1; i < pred.size()-1; ++i) {
 		passed_time +=.1*unit_t;
