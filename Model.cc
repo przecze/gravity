@@ -10,7 +10,7 @@ void Model::operator()(const Vector3<natural_units::Length>& q,
 			dvdt += effect->calculate_acceleration(q, v, t);
 		}
 }
-std::vector<Model::Prediction> Model::predict(natural_units::Time t, natural_units::Time dt) {
+std::vector<Model::Prediction> Model::predict() {
   std::vector<Prediction> predictions;
   using namespace boost::numeric::odeint;
   using namespace natural_units;
@@ -25,11 +25,11 @@ std::vector<Model::Prediction> Model::predict(natural_units::Time t, natural_uni
     vector_space_algebra
     >{};
   auto state = initial_state;
-  while(current_t<t) {
+  while(current_t<end_time) {
     stepper.do_step(
             *this,
             std::make_pair(std::ref(state.first), std::ref(state.second)),
-            t, dt);
+            end_time, dt);
     current_t += dt;
     predictions.emplace_back(state, current_t);
   }
