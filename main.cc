@@ -5,8 +5,11 @@
 #include "Energy.h"
 #include "CentralGravity.h"
 #include "natural_units.h"
+#include "configuration.h"
+
 #include<boost/units/systems/si/io.hpp>
 #include<boost/units/systems/si/prefixes.hpp>
+
 
 	
 template<class T>
@@ -48,13 +51,12 @@ int main(int argc, char *argv[]) {
 	using namespace boost::units;
 	auto model = Model{};
 	model.add_effect(std::make_shared<CentralGravity>());
-	auto b = Body{
+  Body::state_type b = std::make_pair(
 		make_vector(1./sqrt(2.),0.,1./sqrt(2.),1.*unit_l + make_natural(408000.*si::meter)),
-		make_vector(0.,-7.66,0.,1.0*si::kilo*si::meter_per_second)
-	};
-	print_prediction(Model::Prediction(std::make_pair(b.pos, b.vel), 0*unit_t));
-
-	auto pred = model.predict(b, 5.*unit_t, .1*unit_t);
+		make_vector(0.,-7.66,0.,1.0*si::kilo*si::meter_per_second));
+	print_prediction(Model::Prediction(b, 0*unit_t));
+  model.set_initial_state(std::move(b));
+	auto pred = model.predict(5.*unit_t, .1*unit_t);
 	auto passed_time = Time{0.*unit_t};
 	for(int i = 1; i < pred.size()-1; ++i) {
 		passed_time +=.1*unit_t;
