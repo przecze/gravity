@@ -9,6 +9,7 @@
 #include "util.h"
 
 #include<boost/units/systems/si/prefixes.hpp>
+
 	
 
 int main(int argc, char *argv[]) {
@@ -24,6 +25,7 @@ int main(int argc, char *argv[]) {
        .set_initial_state(std::move(state))
        .set_end_time(5.*unit_t)
        .set_dt(.1*unit_t);
+  auto model2 = config::load_config_from_file("config.toml");
 
 	auto predictions = model.predict();
 
